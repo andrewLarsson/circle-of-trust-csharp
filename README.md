@@ -16,7 +16,7 @@ JoinCircle
 BetrayCircle
 ```
 
-##Work that Needs to be Done Still
+## Work that Needs to be Done Still
 - Read Model
 - Read Model Population/Sync
 - Business Rules and Constraints
