@@ -1,0 +1,45 @@
+CREATE TABLE [dbo].[Player] (
+	[Id] UNIQUEIDENTIFIER,
+	[Username] VARCHAR(255) NOT NULL,
+	[Password] VARCHAR(255) NOT NULL,
+	[ClusterId] BIGINT NOT NULL IDENTITY,
+	CONSTRAINT [PK_Player_Id] PRIMARY KEY NONCLUSTERED ([Id]),
+	CONSTRAINT [UX_Player_Username] UNIQUE ([Username])
+)
+CREATE UNIQUE CLUSTERED INDEX [IX_Player_ClusterID] ON [dbo].[Player]([ClusterID])
+
+CREATE TABLE [dbo].[Circle] (
+	[Id] UNIQUEIDENTIFIER,
+	[PlayerId] UNIQUEIDENTIFIER NOT NULL,
+	[Name] VARCHAR(511) NOT NULL,
+	[Key] VARCHAR(511) NOT NULL,
+	[ClusterId] BIGINT NOT NULL IDENTITY,
+	CONSTRAINT [PK_Circle_Id] PRIMARY KEY NONCLUSTERED ([Id]),
+	CONSTRAINT [FK_Circle_PlayerId] FOREIGN KEY ([PlayerId]) REFERENCES [Player]([Id]),
+	CONSTRAINT [UX_Circle_Name] UNIQUE ([Name])
+)
+CREATE UNIQUE CLUSTERED INDEX [IX_Circle_ClusterID] ON [dbo].[Circle]([ClusterID])
+
+CREATE TABLE [dbo].[Member] (
+	[Id] UNIQUEIDENTIFIER,
+	[PlayerId] UNIQUEIDENTIFIER NOT NULL,
+	[CircleId] UNIQUEIDENTIFIER NOT NULL,
+	[ClusterId] BIGINT NOT NULL IDENTITY,
+	CONSTRAINT [PK_Member_Id] PRIMARY KEY NONCLUSTERED ([Id]),
+	CONSTRAINT [FK_Member_PlayerId] FOREIGN KEY ([PlayerId]) REFERENCES [Player]([Id]),
+	CONSTRAINT [FK_Member_CircleId] FOREIGN KEY ([CircleId]) REFERENCES [Circle]([Id]),
+	CONSTRAINT [UX_Member_PlayerId_CircleId] UNIQUE ([PlayerId], [CircleId])
+)
+CREATE UNIQUE CLUSTERED INDEX [IX_Member_ClusterID] ON [dbo].[Member]([ClusterID])
+
+CREATE TABLE [dbo].[BetrayedCircle] (
+	[Id] UNIQUEIDENTIFIER,
+	[CircleId] UNIQUEIDENTIFIER NOT NULL,
+	[PlayerId] UNIQUEIDENTIFIER NOT NULL,
+	[ClusterId] BIGINT NOT NULL IDENTITY,
+	CONSTRAINT [PK_BetrayedCircle_Id] PRIMARY KEY NONCLUSTERED ([Id]),
+	CONSTRAINT [FK_BetrayedCircle_CircleId] FOREIGN KEY ([CircleId]) REFERENCES [Circle]([Id]),
+	CONSTRAINT [FK_BetrayedCircle_PlayerId] FOREIGN KEY ([PlayerId]) REFERENCES [Player]([Id]),
+	CONSTRAINT [UX_BetrayedCircle_CircleId] UNIQUE ([CircleId])
+)
+CREATE UNIQUE CLUSTERED INDEX [IX_BetrayedCircle_ClusterID] ON [dbo].[BetrayedCircle]([ClusterID])

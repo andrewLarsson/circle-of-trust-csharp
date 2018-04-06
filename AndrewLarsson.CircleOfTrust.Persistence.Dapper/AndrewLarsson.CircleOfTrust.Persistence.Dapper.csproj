@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="1.50.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AndrewLarsson.CircleOfTrust.Domain\AndrewLarsson.CircleOfTrust.Domain.csproj" />
+    <ProjectReference Include="..\AndrewLarsson.CircleOfTrust.Persistence\AndrewLarsson.CircleOfTrust.Persistence.csproj" />
+    <ProjectReference Include="..\AndrewLarsson.Common.AppService\AndrewLarsson.Common.AppService.csproj" />
+    <ProjectReference Include="..\AndrewLarsson.Common.Domain\AndrewLarsson.Common.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
