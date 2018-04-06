@@ -8,10 +8,9 @@ Uses CQRS.
 Access with JSON RPC 2.0 over HTTP or WebSockets.
 
 ## Commands
+```
 RegisterPlayer
-
 InitiateCircle
-
 JoinCircle
-
 BetrayCircle
+```
