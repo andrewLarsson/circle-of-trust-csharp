@@ -17,7 +17,6 @@ BetrayCircle
 ```
 
 ## Work that Needs to be Done
-- Cached Leaderboard in the Read Model
 - Query Command Handlers to get data from the Read Model
 - Business Rules and Constraints
 - Player Authentication
