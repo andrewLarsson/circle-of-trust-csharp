@@ -5,11 +5,11 @@ using AndrewLarsson.Common.Host;
 using Dapper;
 
 namespace AndrewLarsson.CircleOfTrust.Persistence.Dapper.EventHandlers {
-	public class CircleBetrayedEventHandler : IEventHandler<CircleBetrayedEvent> {
+	public class Aaa_CircleBetrayedEventHandler : IEventHandler<CircleBetrayedEvent> {
 		private static readonly string InsertBetrayedCircleFromCircleBetrayedEvent = @"INSERT INTO BetrayedCircle ([Id], [CircleId], [PlayerId]) VALUES (@AggregateRootId, @CircleId, @PlayerId);";
 		private readonly IDbConnection _dbConnection;
 
-		public CircleBetrayedEventHandler(IDbConnection dbConnection) {
+		public Aaa_CircleBetrayedEventHandler(IDbConnection dbConnection) {
 			_dbConnection = dbConnection;
 		}
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AndrewLarsson.Common.AppService;
 using AndrewLarsson.Common.Domain;
@@ -16,7 +17,7 @@ namespace AndrewLarsson.CircleOfTrust.Infrastructure {
 		public async Task PublishAsync(IEnumerable<DomainEvent> events) {
 			foreach (DomainEvent domainEvent in events) {
 				Type eventType = domainEvent.GetType();
-				IEnumerable<object> eventHandlers = _eventHandlerProvider.GetEventHandlers(eventType);
+				List<object> eventHandlers = _eventHandlerProvider.GetEventHandlers(eventType).OrderBy(h => h.GetType().Name).ToList();
 				foreach (dynamic eventHandler in eventHandlers) {
 					await eventHandler.HandleAsync((dynamic)domainEvent);
 				}

@@ -24,3 +24,12 @@ CREATE UNIQUE CLUSTERED INDEX [IX_CircleStats_ClusterID] ON [dbo].[CircleStats](
 CREATE INDEX [IX_CircleStats_PlayerId] ON [dbo].[CircleStats]([PlayerId])
 CREATE INDEX [IX_CircleStats_Name] ON [dbo].[CircleStats]([Name])
 CREATE INDEX [IX_CircleStats_IsBetrayed] ON [dbo].[CircleStats]([IsBetrayed])
+
+CREATE TABLE [dbo].[CircleLeaderboardContender] (
+	[CircleLeaderboardContenderId] INT NOT NULL IDENTITY,
+	[CircleId] UNIQUEIDENTIFIER NOT NULL,
+	[Members] INT NOT NULL,
+	CONSTRAINT [PK_CircleLeaderboardContender_CircleLeaderboardContenderId] PRIMARY KEY ([CircleLeaderboardContenderId])
+)
+CREATE INDEX [IX_CircleLeaderboardContender_CircleId] ON [dbo].[CircleLeaderboardContender]([CircleId])
+CREATE INDEX [IX_CircleLeaderboardContender_Members] ON [dbo].[CircleLeaderboardContender]([Members])
