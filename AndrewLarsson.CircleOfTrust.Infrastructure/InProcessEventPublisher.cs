@@ -17,7 +17,7 @@ namespace AndrewLarsson.CircleOfTrust.Infrastructure {
 		public async Task PublishAsync(IEnumerable<DomainEvent> events) {
 			foreach (DomainEvent domainEvent in events) {
 				Type eventType = domainEvent.GetType();
-				List<object> eventHandlers = _eventHandlerProvider.GetEventHandlers(eventType).OrderBy(h => h.GetType().Name).ToList();
+				List<object> eventHandlers = _eventHandlerProvider.GetEventHandlers(eventType).OrderBy(o => o.GetType().Name).ToList();
 				foreach (dynamic eventHandler in eventHandlers) {
 					await eventHandler.HandleAsync((dynamic)domainEvent);
 				}
