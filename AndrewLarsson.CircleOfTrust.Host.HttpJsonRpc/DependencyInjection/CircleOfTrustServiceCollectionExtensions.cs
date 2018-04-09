@@ -19,7 +19,8 @@ namespace AndrewLarsson.CircleOfTrust.Host.HttpJsonRpc.DependencyInjection {
 				.AddCircleOfTrustHost(configuration)
 				.AddCircleOfTrustInfrastructure(configuration)
 				.AddAutomaticCircleOfTrustCommandHandlers(configuration)
-				.AddAutomaticCircleOfTrustEventHandlers(configuration)
+				.AddAutomaticCircleOfTrustPersistenceEventHandlers(configuration)
+				.AddAutomaticCircleOfTrustViewEventHandlers(configuration)
 			;
 		}
 
@@ -58,12 +59,21 @@ namespace AndrewLarsson.CircleOfTrust.Host.HttpJsonRpc.DependencyInjection {
 			;
 		}
 
-		public static IServiceCollection AddAutomaticCircleOfTrustEventHandlers(this IServiceCollection serviceCollection, IConfiguration configuration) {
+		public static IServiceCollection AddAutomaticCircleOfTrustPersistenceEventHandlers(this IServiceCollection serviceCollection, IConfiguration configuration) {
 			if (serviceCollection == null) {
 				throw new ArgumentNullException(nameof(serviceCollection));
 			}
 			return serviceCollection
 				.AddGenericTypeDefinition(typeof(IEventHandler<>), "AndrewLarsson.CircleOfTrust.Persistence.Dapper.EventHandlers".ToAssembly())
+			;
+		}
+
+		public static IServiceCollection AddAutomaticCircleOfTrustViewEventHandlers(this IServiceCollection serviceCollection, IConfiguration configuration) {
+			if (serviceCollection == null) {
+				throw new ArgumentNullException(nameof(serviceCollection));
+			}
+			return serviceCollection
+				.AddGenericTypeDefinition(typeof(IEventHandler<>), "AndrewLarsson.CircleOfTrust.View.Dapper.EventHandlers".ToAssembly())
 			;
 		}
 	}

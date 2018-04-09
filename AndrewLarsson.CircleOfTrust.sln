@@ -29,6 +29,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AndrewLarsson.Common.Host.H
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AndrewLarsson.Common.DependencyInjection.Configuration", "AndrewLarsson.Common.DependencyInjection.Configuration\AndrewLarsson.Common.DependencyInjection.Configuration.csproj", "{80E78F16-F84D-40D2-906E-BA7F795C79C3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AndrewLarsson.CircleOfTrust.View.Dapper.EventHandlers", "AndrewLarsson.CircleOfTrust.View.Dapper.EventHandlers\AndrewLarsson.CircleOfTrust.View.Dapper.EventHandlers.csproj", "{68F1602A-0622-4C1F-BB34-018403C97047}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AndrewLarsson.CircleOfTrust.View", "AndrewLarsson.CircleOfTrust.View\AndrewLarsson.CircleOfTrust.View.csproj", "{1BC31133-92FB-46C4-8FC4-09BA5199CCB9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +91,14 @@ Global
 		{80E78F16-F84D-40D2-906E-BA7F795C79C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{80E78F16-F84D-40D2-906E-BA7F795C79C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{80E78F16-F84D-40D2-906E-BA7F795C79C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68F1602A-0622-4C1F-BB34-018403C97047}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68F1602A-0622-4C1F-BB34-018403C97047}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68F1602A-0622-4C1F-BB34-018403C97047}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68F1602A-0622-4C1F-BB34-018403C97047}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1BC31133-92FB-46C4-8FC4-09BA5199CCB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1BC31133-92FB-46C4-8FC4-09BA5199CCB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1BC31133-92FB-46C4-8FC4-09BA5199CCB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1BC31133-92FB-46C4-8FC4-09BA5199CCB9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
