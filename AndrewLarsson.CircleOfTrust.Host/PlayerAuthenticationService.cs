@@ -4,9 +4,6 @@ using AndrewLarsson.CircleOfTrust.Host.Exceptions;
 
 namespace AndrewLarsson.CircleOfTrust.Host {
 	public class PlayerAuthenticationService : IPlayerAuthenticationService {
-		public PlayerAuthenticationService() {
-		}
-
 		public Task<Guid> AuthenticatePlayer(PlayerAuthentication playerAuthentication) {
 			//TODO Auth
 			if (playerAuthentication == null) { //TODO also throw if username/password is incorrect.

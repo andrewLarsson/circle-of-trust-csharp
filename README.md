@@ -16,9 +16,13 @@ JoinCircle
 BetrayCircle
 ```
 
+## Queries
+```
+...
+```
+
 ## Work that Needs to be Done
-- Query Command Handlers to get data from the Read Model
-- Business Rules and Constraints
+- Queries and Query Handlers to get data from the Read Model
 - Player Authentication
 - Player Verification
 - Deployment Strategy

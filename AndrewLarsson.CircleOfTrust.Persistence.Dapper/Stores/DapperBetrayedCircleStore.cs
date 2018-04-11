@@ -5,7 +5,7 @@ using AndrewLarsson.CircleOfTrust.Domain.AggregateRoots;
 using AndrewLarsson.Common.AppService;
 using Dapper;
 
-namespace AndrewLarsson.CircleOfTrust.Persistence.Dapper {
+namespace AndrewLarsson.CircleOfTrust.Persistence.Dapper.Stores {
 	public class DapperBetrayedCircleStore : IAggregateRootStore<BetrayedCircle> {
 		private static readonly string LoadBetrayedCircle = @"SELECT * FROM BetrayedCircle WHERE Id = @Id;";
 		private readonly IDbConnection _dbConnection;
@@ -15,7 +15,10 @@ namespace AndrewLarsson.CircleOfTrust.Persistence.Dapper {
 		}
 
 		public async Task<BetrayedCircle> LoadAsync(Guid id) {
-			Models.BetrayedCircle betrayedCircle = await _dbConnection.QuerySingleAsync<Models.BetrayedCircle>(LoadBetrayedCircle, new { Id = id });
+			Models.BetrayedCircle betrayedCircle = await _dbConnection.QueryFirstOrDefaultAsync<Models.BetrayedCircle>(LoadBetrayedCircle, new { Id = id });
+			if (betrayedCircle == null) {
+				return null;
+			}
 			return new BetrayedCircle(betrayedCircle.Id, betrayedCircle.CircleId, betrayedCircle.PlayerId);
 		}
 

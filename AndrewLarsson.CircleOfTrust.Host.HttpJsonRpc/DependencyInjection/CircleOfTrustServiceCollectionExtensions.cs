@@ -2,8 +2,10 @@
 using System.Data;
 using System.Data.SqlClient;
 using AndrewLarsson.CircleOfTrust.Domain.AggregateRoots;
+using AndrewLarsson.CircleOfTrust.Domain.Repositories;
 using AndrewLarsson.CircleOfTrust.Infrastructure;
-using AndrewLarsson.CircleOfTrust.Persistence.Dapper;
+using AndrewLarsson.CircleOfTrust.Persistence.Dapper.Repositories;
+using AndrewLarsson.CircleOfTrust.Persistence.Dapper.Stores;
 using AndrewLarsson.Common.AppService;
 using AndrewLarsson.Common.Host;
 using Microsoft.Extensions.Configuration;
@@ -17,10 +19,9 @@ namespace AndrewLarsson.CircleOfTrust.Host.HttpJsonRpc.DependencyInjection {
 			}
 			return serviceCollection
 				.AddCircleOfTrustHost(configuration)
-				.AddCircleOfTrustInfrastructure(configuration)
-				.AddAutomaticCircleOfTrustCommandHandlers(configuration)
-				.AddAutomaticCircleOfTrustPersistenceEventHandlers(configuration)
-				.AddAutomaticCircleOfTrustViewEventHandlers(configuration)
+				.AddCircleOfTrustDapperPersistence(configuration)
+				.AddCircleOfTrustInProcessEvents(configuration)
+				.AddCircleOfTrustAppServiceCommandHandlers(configuration)
 			;
 		}
 
@@ -36,7 +37,7 @@ namespace AndrewLarsson.CircleOfTrust.Host.HttpJsonRpc.DependencyInjection {
 			;
 		}
 
-		public static IServiceCollection AddCircleOfTrustInfrastructure(this IServiceCollection serviceCollection, IConfiguration configuration) {
+		public static IServiceCollection AddCircleOfTrustDapperPersistence(this IServiceCollection serviceCollection, IConfiguration configuration) {
 			if (serviceCollection == null) {
 				throw new ArgumentNullException(nameof(serviceCollection));
 			}
@@ -46,34 +47,30 @@ namespace AndrewLarsson.CircleOfTrust.Host.HttpJsonRpc.DependencyInjection {
 				.AddSingleton<IAggregateRootStore<Circle>, DapperCircleStore>()
 				.AddSingleton<IAggregateRootStore<Member>, DapperMemberStore>()
 				.AddSingleton<IAggregateRootStore<BetrayedCircle>, DapperBetrayedCircleStore>()
+				.AddSingleton<IPlayerRepository, DapperPlayerRepository>()
+				.AddSingleton<ICircleRepository, DapperCircleRepository>()
+				.AddSingleton<IMemberRepository, DapperMemberRepository>()
+				.AddSingleton<IBetrayedCircleRepository, DapperBetrayedCircleRepository>()
+				.AddGenericTypeDefinition(typeof(IEventHandler<>), "AndrewLarsson.CircleOfTrust.Persistence.Dapper.EventHandlers".ToAssembly())
+				.AddGenericTypeDefinition(typeof(IEventHandler<>), "AndrewLarsson.CircleOfTrust.View.Dapper.EventHandlers".ToAssembly())
+			;
+		}
+
+		public static IServiceCollection AddCircleOfTrustInProcessEvents(this IServiceCollection serviceCollection, IConfiguration configuration) {
+			if (serviceCollection == null) {
+				throw new ArgumentNullException(nameof(serviceCollection));
+			}
+			return serviceCollection
 				.AddSingleton<IEventPublisher, InProcessEventPublisher>()
 			;
 		}
 
-		public static IServiceCollection AddAutomaticCircleOfTrustCommandHandlers(this IServiceCollection serviceCollection, IConfiguration configuration) {
+		public static IServiceCollection AddCircleOfTrustAppServiceCommandHandlers(this IServiceCollection serviceCollection, IConfiguration configuration) {
 			if (serviceCollection == null) {
 				throw new ArgumentNullException(nameof(serviceCollection));
 			}
 			return serviceCollection
 				.AddGenericTypeDefinition(typeof(ICommandHandler<>), "AndrewLarsson.CircleOfTrust.AppService".ToAssembly())
-			;
-		}
-
-		public static IServiceCollection AddAutomaticCircleOfTrustPersistenceEventHandlers(this IServiceCollection serviceCollection, IConfiguration configuration) {
-			if (serviceCollection == null) {
-				throw new ArgumentNullException(nameof(serviceCollection));
-			}
-			return serviceCollection
-				.AddGenericTypeDefinition(typeof(IEventHandler<>), "AndrewLarsson.CircleOfTrust.Persistence.Dapper.EventHandlers".ToAssembly())
-			;
-		}
-
-		public static IServiceCollection AddAutomaticCircleOfTrustViewEventHandlers(this IServiceCollection serviceCollection, IConfiguration configuration) {
-			if (serviceCollection == null) {
-				throw new ArgumentNullException(nameof(serviceCollection));
-			}
-			return serviceCollection
-				.AddGenericTypeDefinition(typeof(IEventHandler<>), "AndrewLarsson.CircleOfTrust.View.Dapper.EventHandlers".ToAssembly())
 			;
 		}
 	}

@@ -19,7 +19,7 @@ namespace AndrewLarsson.CircleOfTrust.View.Dapper.EventHandlers {
 
 		public async Task HandleAsync(MemberJoinedEvent memberJoinedEvent) {
 			CircleStats circleStats = await _dbConnection.QuerySingleAsync<CircleStats>(LoadCircleStats, new {
-				CircleId = memberJoinedEvent.CircleId
+				memberJoinedEvent.CircleId
 			});
 			CircleLeaderboardContender circleLeaderboardContender = await _dbConnection.QuerySingleAsync<CircleLeaderboardContender>(LoadLowestCircleLeaderboardContender);
 			if (circleStats.Members > circleLeaderboardContender.Members) {
