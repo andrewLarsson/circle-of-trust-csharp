@@ -18,11 +18,17 @@ BetrayCircle
 
 ## Queries
 ```
-...
+ReadPlayerStatsByPlayerId
+ReadCircleStatsByCircleId
+ReadCircleStatsByPlayerId
+ReadAllPlayerStats
+ReadAllCircleStats
+ReadCircleLeaderboard
 ```
 
 ## Work that Needs to be Done
-- Queries and Query Handlers to get data from the Read Model
 - Player Authentication
 - Player Verification
+- Event Store
+- IDbConnection Lifetime Management
 - Deployment Strategy

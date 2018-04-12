@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 
 namespace AndrewLarsson.Common.AppService {
-	public interface ICommandHandler<in T> where T : ICommand {
-		Task HandleAsync(T command);
+	public interface ICommandHandler<in TCommand> where TCommand : ICommand {
+		Task HandleAsync(TCommand command);
 	}
 }

@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using AndrewLarsson.CircleOfTrust.AppService.Commands;
 using AndrewLarsson.Common.AppService;
-using AndrewLarsson.Common.Host;
+using AndrewLarsson.Common.Host.Providers;
 using EdjCase.JsonRpc.Router;
 
 namespace AndrewLarsson.CircleOfTrust.Host.HttpJsonRpc.Controllers {

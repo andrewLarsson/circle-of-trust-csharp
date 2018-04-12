@@ -1,3 +1,8 @@
+USE master;
+CREATE DATABASE [CircleOfTrustView];
+GO
+USE [CircleOfTrustView];
+
 CREATE TABLE [dbo].[PlayerStats] (
 	[PlayerId] UNIQUEIDENTIFIER NOT NULL,
 	[Username] VARCHAR(255) NOT NULL,

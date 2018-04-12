@@ -1,5 +1,5 @@
 ﻿using AndrewLarsson.CircleOfTrust.Host.HttpJsonRpc.DependencyInjection;
-using AndrewLarsson.Common.DependencyInjection.Configuration;
+using AndrewLarsson.Common.DependencyInjection;
 using AndrewLarsson.Common.Host.HttpJsonRpc;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AndrewLarsson.Common.AppService;
 using AndrewLarsson.Common.Domain;
-using AndrewLarsson.Common.Host;
+using AndrewLarsson.Common.Host.Providers;
 
 namespace AndrewLarsson.CircleOfTrust.Infrastructure {
 	public class InProcessEventPublisher : IEventPublisher {

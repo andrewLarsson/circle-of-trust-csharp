@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AndrewLarsson.Common.AppService\AndrewLarsson.Common.AppService.csproj" />
-    <ProjectReference Include="..\AndrewLarsson.Common.DomainEventHandling\AndrewLarsson.Common.Host.csproj" />
   </ItemGroup>
 
 </Project>

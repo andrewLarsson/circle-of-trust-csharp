@@ -10,8 +10,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AndrewLarsson.CircleOfTrust.Domain\AndrewLarsson.CircleOfTrust.Domain.csproj" />
+    <ProjectReference Include="..\AndrewLarsson.CircleOfTrust.View.Dapper\AndrewLarsson.CircleOfTrust.View.Dapper.csproj" />
     <ProjectReference Include="..\AndrewLarsson.CircleOfTrust.View\AndrewLarsson.CircleOfTrust.View.csproj" />
-    <ProjectReference Include="..\AndrewLarsson.Common.DomainEventHandling\AndrewLarsson.Common.Host.csproj" />
   </ItemGroup>
 
 </Project>

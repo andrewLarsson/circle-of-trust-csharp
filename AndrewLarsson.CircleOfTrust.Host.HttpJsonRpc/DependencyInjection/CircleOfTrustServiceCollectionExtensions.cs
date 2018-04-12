@@ -1,13 +1,18 @@
 ﻿using System;
-using System.Data;
 using System.Data.SqlClient;
 using AndrewLarsson.CircleOfTrust.Domain.AggregateRoots;
 using AndrewLarsson.CircleOfTrust.Domain.Repositories;
 using AndrewLarsson.CircleOfTrust.Infrastructure;
+using AndrewLarsson.CircleOfTrust.Persistence.Dapper;
 using AndrewLarsson.CircleOfTrust.Persistence.Dapper.Repositories;
 using AndrewLarsson.CircleOfTrust.Persistence.Dapper.Stores;
+using AndrewLarsson.CircleOfTrust.View.Dapper;
 using AndrewLarsson.Common.AppService;
-using AndrewLarsson.Common.Host;
+using AndrewLarsson.Common.DependencyInjection;
+using AndrewLarsson.Common.Domain;
+using AndrewLarsson.Common.Host.Providers;
+using AndrewLarsson.Common.Host.Providers.DependencyInjection;
+using AndrewLarsson.Common.View;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -20,6 +25,7 @@ namespace AndrewLarsson.CircleOfTrust.Host.HttpJsonRpc.DependencyInjection {
 			return serviceCollection
 				.AddCircleOfTrustHost(configuration)
 				.AddCircleOfTrustDapperPersistence(configuration)
+				.AddCircleOfTrustDapperView(configuration)
 				.AddCircleOfTrustInProcessEvents(configuration)
 				.AddCircleOfTrustAppServiceCommandHandlers(configuration)
 			;
@@ -31,6 +37,7 @@ namespace AndrewLarsson.CircleOfTrust.Host.HttpJsonRpc.DependencyInjection {
 			}
 			return serviceCollection
 				.AddSingleton<ICommandHandlerProvider, CommandHandlerProvider>()
+				.AddSingleton<IQueryHandlerProvider, QueryHandlerProvider>()
 				.AddSingleton<IEventHandlerProvider, EventHandlerProvider>()
 				.AddSingleton<IPlayerVerificationService, PlayerVerificationService>()
 				.AddSingleton<IPlayerAuthenticationService, PlayerAuthenticationService>()
@@ -42,7 +49,7 @@ namespace AndrewLarsson.CircleOfTrust.Host.HttpJsonRpc.DependencyInjection {
 				throw new ArgumentNullException(nameof(serviceCollection));
 			}
 			return serviceCollection
-				.AddTransient<IDbConnection>(serviceProvider => new SqlConnection(@"Data Source=LITTLEBROTHER\LOCALHOST;Initial Catalog=CircleOfTrust;Integrated Security=True"))
+				.AddTransient(serviceProvider => new CircleOfTrustDapperPersistenceContext(new SqlConnection(configuration["App:CircleOfTrustDatabaseConnectionString"])))
 				.AddSingleton<IAggregateRootStore<Player>, DapperPlayerStore>()
 				.AddSingleton<IAggregateRootStore<Circle>, DapperCircleStore>()
 				.AddSingleton<IAggregateRootStore<Member>, DapperMemberStore>()
@@ -52,7 +59,17 @@ namespace AndrewLarsson.CircleOfTrust.Host.HttpJsonRpc.DependencyInjection {
 				.AddSingleton<IMemberRepository, DapperMemberRepository>()
 				.AddSingleton<IBetrayedCircleRepository, DapperBetrayedCircleRepository>()
 				.AddGenericTypeDefinition(typeof(IEventHandler<>), "AndrewLarsson.CircleOfTrust.Persistence.Dapper.EventHandlers".ToAssembly())
+			;
+		}
+
+		public static IServiceCollection AddCircleOfTrustDapperView(this IServiceCollection serviceCollection, IConfiguration configuration) {
+			if (serviceCollection == null) {
+				throw new ArgumentNullException(nameof(serviceCollection));
+			}
+			return serviceCollection
+				.AddTransient(serviceProvider => new CircleOfTrustDapperViewContext(new SqlConnection(configuration["App:CircleOfTrustViewDatabaseConnectionString"])))
 				.AddGenericTypeDefinition(typeof(IEventHandler<>), "AndrewLarsson.CircleOfTrust.View.Dapper.EventHandlers".ToAssembly())
+				.AddGenericTypeDefinition(typeof(IQueryHandler<>), "AndrewLarsson.CircleOfTrust.View.Dapper.QueryHandlers".ToAssembly())
 			;
 		}
 
@@ -70,7 +87,7 @@ namespace AndrewLarsson.CircleOfTrust.Host.HttpJsonRpc.DependencyInjection {
 				throw new ArgumentNullException(nameof(serviceCollection));
 			}
 			return serviceCollection
-				.AddGenericTypeDefinition(typeof(ICommandHandler<>), "AndrewLarsson.CircleOfTrust.AppService".ToAssembly())
+				.AddGenericTypeDefinition(typeof(ICommandHandler<>), "AndrewLarsson.CircleOfTrust.AppService.CommandHandlers".ToAssembly())
 			;
 		}
 	}

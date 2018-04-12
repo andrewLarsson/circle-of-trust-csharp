@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AndrewLarsson.Common.AppService\AndrewLarsson.Common.AppService.csproj" />
+    <ProjectReference Include="..\AndrewLarsson.Common.Domain\AndrewLarsson.Common.Domain.csproj" />
+    <ProjectReference Include="..\AndrewLarsson.Common.View\AndrewLarsson.Common.View.csproj" />
+  </ItemGroup>
+
+</Project>

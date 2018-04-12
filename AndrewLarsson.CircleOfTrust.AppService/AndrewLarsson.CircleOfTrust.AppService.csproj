@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AndrewLarsson.CircleOfTrust.Domain\AndrewLarsson.CircleOfTrust.Domain.csproj" />
     <ProjectReference Include="..\AndrewLarsson.Common.AppService\AndrewLarsson.Common.AppService.csproj" />
   </ItemGroup>
 

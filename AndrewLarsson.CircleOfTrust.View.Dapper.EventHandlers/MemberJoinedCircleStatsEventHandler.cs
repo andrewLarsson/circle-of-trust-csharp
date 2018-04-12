@@ -1,20 +1,19 @@
-﻿using System.Data;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using AndrewLarsson.CircleOfTrust.Domain.Events;
-using AndrewLarsson.Common.Host;
+using AndrewLarsson.Common.Domain;
 using Dapper;
 
 namespace AndrewLarsson.CircleOfTrust.View.Dapper.EventHandlers {
 	public class MemberJoinedCircleStatsEventHandler : IEventHandler<MemberJoinedEvent> {
 		private static readonly string UpdateCircleStatsFromMemberJoinedEvent = @"UPDATE CircleStats SET [Members] = [Members] + 1 WHERE [CircleId] = @CircleId;";
-		private readonly IDbConnection _dbConnection;
+		private readonly CircleOfTrustDapperViewContext _viewContext;
 
-		public MemberJoinedCircleStatsEventHandler(IDbConnection dbConnection) {
-			_dbConnection = dbConnection;
+		public MemberJoinedCircleStatsEventHandler(CircleOfTrustDapperViewContext viewContext) {
+			_viewContext = viewContext;
 		}
 
 		public Task HandleAsync(MemberJoinedEvent memberJoinedEvent) {
-			return _dbConnection.ExecuteAsync(UpdateCircleStatsFromMemberJoinedEvent, memberJoinedEvent);
+			return _viewContext.DbConnection.ExecuteAsync(UpdateCircleStatsFromMemberJoinedEvent, memberJoinedEvent);
 		}
 	}
 }

@@ -17,20 +17,27 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AndrewLarsson.CircleOfTrust.AppService.CommandHandlers\AndrewLarsson.CircleOfTrust.AppService.CommandHandlers.csproj" />
     <ProjectReference Include="..\AndrewLarsson.CircleOfTrust.AppService\AndrewLarsson.CircleOfTrust.AppService.csproj" />
     <ProjectReference Include="..\AndrewLarsson.CircleOfTrust.Domain\AndrewLarsson.CircleOfTrust.Domain.csproj" />
     <ProjectReference Include="..\AndrewLarsson.CircleOfTrust.Host\AndrewLarsson.CircleOfTrust.Host.csproj" />
     <ProjectReference Include="..\AndrewLarsson.CircleOfTrust.Infrastructure\AndrewLarsson.CircleOfTrust.Infrastructure.csproj" />
     <ProjectReference Include="..\AndrewLarsson.CircleOfTrust.Persistence.Dapper.EventHandlers\AndrewLarsson.CircleOfTrust.Persistence.Dapper.EventHandlers.csproj" />
+    <ProjectReference Include="..\AndrewLarsson.CircleOfTrust.Persistence.Dapper.Repositories\AndrewLarsson.CircleOfTrust.Persistence.Dapper.Repositories.csproj" />
+    <ProjectReference Include="..\AndrewLarsson.CircleOfTrust.Persistence.Dapper.Stores\AndrewLarsson.CircleOfTrust.Persistence.Dapper.Stores.csproj" />
     <ProjectReference Include="..\AndrewLarsson.CircleOfTrust.Persistence.Dapper\AndrewLarsson.CircleOfTrust.Persistence.Dapper.csproj" />
     <ProjectReference Include="..\AndrewLarsson.CircleOfTrust.Persistence\AndrewLarsson.CircleOfTrust.Persistence.csproj" />
     <ProjectReference Include="..\AndrewLarsson.CircleOfTrust.View.Dapper.EventHandlers\AndrewLarsson.CircleOfTrust.View.Dapper.EventHandlers.csproj" />
+    <ProjectReference Include="..\AndrewLarsson.CircleOfTrust.View.Dapper.QueryHandlers\AndrewLarsson.CircleOfTrust.View.Dapper.QueryHandlers.csproj" />
+    <ProjectReference Include="..\AndrewLarsson.CircleOfTrust.View.Dapper\AndrewLarsson.CircleOfTrust.View.Dapper.csproj" />
     <ProjectReference Include="..\AndrewLarsson.CircleOfTrust.View\AndrewLarsson.CircleOfTrust.View.csproj" />
     <ProjectReference Include="..\AndrewLarsson.Common.AppService\AndrewLarsson.Common.AppService.csproj" />
-    <ProjectReference Include="..\AndrewLarsson.Common.DependencyInjection.Configuration\AndrewLarsson.Common.DependencyInjection.Configuration.csproj" />
-    <ProjectReference Include="..\AndrewLarsson.Common.DomainEventHandling\AndrewLarsson.Common.Host.csproj" />
+    <ProjectReference Include="..\AndrewLarsson.Common.DependencyInjection\AndrewLarsson.Common.DependencyInjection.csproj" />
     <ProjectReference Include="..\AndrewLarsson.Common.Domain\AndrewLarsson.Common.Domain.csproj" />
     <ProjectReference Include="..\AndrewLarsson.Common.Host.HttpJsonRpc\AndrewLarsson.Common.Host.HttpJsonRpc.csproj" />
+    <ProjectReference Include="..\AndrewLarsson.Common.Host.Providers.DependencyInjection\AndrewLarsson.Common.Host.Providers.DependencyInjection.csproj" />
+    <ProjectReference Include="..\AndrewLarsson.Common.Host.Providers\AndrewLarsson.Common.Host.Providers.csproj" />
+    <ProjectReference Include="..\AndrewLarsson.Common.View\AndrewLarsson.Common.View.csproj" />
   </ItemGroup>
 
 </Project>

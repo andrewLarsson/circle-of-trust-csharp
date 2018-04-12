@@ -1,3 +1,8 @@
+USE master;
+CREATE DATABASE [CircleOfTrust];
+GO
+USE [CircleOfTrust];
+
 CREATE TABLE [dbo].[Player] (
 	[Id] UNIQUEIDENTIFIER NOT NULL,
 	[Username] VARCHAR(255) NOT NULL,
@@ -16,7 +21,7 @@ CREATE TABLE [dbo].[Circle] (
 	[ClusterId] BIGINT NOT NULL IDENTITY,
 	CONSTRAINT [PK_Circle_Id] PRIMARY KEY NONCLUSTERED ([Id]),
 	CONSTRAINT [FK_Circle_PlayerId] FOREIGN KEY ([PlayerId]) REFERENCES [Player]([Id]),
-	CONSTRAINT [UX_Circle_PlayerId] UNIQUE ([PlayerId])
+	CONSTRAINT [UX_Circle_PlayerId] UNIQUE ([PlayerId]),
 	CONSTRAINT [UX_Circle_Name] UNIQUE ([Name])
 )
 CREATE UNIQUE CLUSTERED INDEX [IX_Circle_ClusterID] ON [dbo].[Circle]([ClusterID])
