@@ -10,7 +10,10 @@ namespace AndrewLarsson.CircleOfTrust.Persistence.Dapper.Stores {
 		private readonly IEventPublisher _eventPublisher;
 		private readonly CircleOfTrustDapperPersistenceContext _persistenceContext;
 
-		public DapperBetrayedCircleStore(IEventPublisher eventPublisher, CircleOfTrustDapperPersistenceContext persistenceContext) {
+		public DapperBetrayedCircleStore(
+			IEventPublisher eventPublisher,
+			CircleOfTrustDapperPersistenceContext persistenceContext
+		) {
 			_eventPublisher = eventPublisher;
 			_persistenceContext = persistenceContext;
 		}
