@@ -7,9 +7,11 @@ using Dapper;
 namespace AndrewLarsson.CircleOfTrust.Persistence.Dapper.Stores {
 	public class DapperBetrayedCircleStore : IAggregateRootStore<BetrayedCircle> {
 		private static readonly string LoadBetrayedCircle = @"SELECT * FROM BetrayedCircle WHERE Id = @Id;";
+		private readonly IEventPublisher _eventPublisher;
 		private readonly CircleOfTrustDapperPersistenceContext _persistenceContext;
 
-		public DapperBetrayedCircleStore(CircleOfTrustDapperPersistenceContext persistenceContext) {
+		public DapperBetrayedCircleStore(IEventPublisher eventPublisher, CircleOfTrustDapperPersistenceContext persistenceContext) {
+			_eventPublisher = eventPublisher;
 			_persistenceContext = persistenceContext;
 		}
 
@@ -22,7 +24,7 @@ namespace AndrewLarsson.CircleOfTrust.Persistence.Dapper.Stores {
 		}
 
 		public Task SaveAsync(BetrayedCircle betrayedCircle) {
-			return Task.FromResult<object>(null);
+			return _eventPublisher.PublishAsync(betrayedCircle.FlushEvents());
 		}
 	}
 }

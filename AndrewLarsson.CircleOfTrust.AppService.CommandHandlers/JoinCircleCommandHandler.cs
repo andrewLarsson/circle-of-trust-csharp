@@ -9,7 +9,6 @@ using AndrewLarsson.Common.AppService;
 
 namespace AndrewLarsson.CircleOfTrust.AppService.CommandHandlers {
 	public class JoinCircleCommandHandler : ICommandHandler<JoinCircleCommand> {
-		private readonly IEventPublisher _eventPublisher;
 		private readonly IAggregateRootStore<Member> _memberStore;
 		private readonly IAggregateRootStore<Player> _playerStore;
 		private readonly IAggregateRootStore<Circle> _circleStore;
@@ -18,7 +17,6 @@ namespace AndrewLarsson.CircleOfTrust.AppService.CommandHandlers {
 		private readonly IMemberRepository _memberRepository;
 
 		public JoinCircleCommandHandler(
-			IEventPublisher eventPublisher,
 			IAggregateRootStore<Member> memberStore,
 			IAggregateRootStore<Player> playerStore,
 			IAggregateRootStore<Circle> circleStore,
@@ -26,7 +24,6 @@ namespace AndrewLarsson.CircleOfTrust.AppService.CommandHandlers {
 			IBetrayedCircleRepository betrayedCircleRepository,
 			IMemberRepository memberRepository
 		) {
-			_eventPublisher = eventPublisher;
 			_memberStore = memberStore;
 			_playerStore = playerStore;
 			_circleStore = circleStore;
@@ -55,7 +52,6 @@ namespace AndrewLarsson.CircleOfTrust.AppService.CommandHandlers {
 				new PlayersMayOnlyJoinACircleOnceRule(_memberRepository)
 			);
 			await _memberStore.SaveAsync(member);
-			await _eventPublisher.PublishAsync(member.Events);
 		}
 	}
 }

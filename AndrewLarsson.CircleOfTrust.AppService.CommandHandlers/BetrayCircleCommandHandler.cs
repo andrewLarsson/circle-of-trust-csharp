@@ -9,7 +9,6 @@ using AndrewLarsson.Common.AppService;
 
 namespace AndrewLarsson.CircleOfTrust.AppService.CommandHandlers {
 	public class BetrayCircleCommandHandler : ICommandHandler<BetrayCircleCommand> {
-		private readonly IEventPublisher _eventPublisher;
 		private readonly IAggregateRootStore<BetrayedCircle> _betrayedCircleStore;
 		private readonly IAggregateRootStore<Player> _playerStore;
 		private readonly IAggregateRootStore<Circle> _circleStore;
@@ -18,7 +17,6 @@ namespace AndrewLarsson.CircleOfTrust.AppService.CommandHandlers {
 		private readonly IMemberRepository _memberRepository;
 
 		public BetrayCircleCommandHandler(
-			IEventPublisher eventPublisher,
 			IAggregateRootStore<BetrayedCircle> betrayedCircleStore,
 			IAggregateRootStore<Player> playerStore,
 			IAggregateRootStore<Circle> circleStore,
@@ -26,7 +24,6 @@ namespace AndrewLarsson.CircleOfTrust.AppService.CommandHandlers {
 			IBetrayedCircleRepository betrayedCircleRepository,
 			IMemberRepository memberRepository
 		) {
-			_eventPublisher = eventPublisher;
 			_betrayedCircleStore = betrayedCircleStore;
 			_playerStore = playerStore;
 			_circleStore = circleStore;
@@ -55,7 +52,6 @@ namespace AndrewLarsson.CircleOfTrust.AppService.CommandHandlers {
 				new PlayersMayNotBetrayCircleTheyAreAMemberOfRule(_memberRepository)
 			);
 			await _betrayedCircleStore.SaveAsync(betrayedCircle);
-			await _eventPublisher.PublishAsync(betrayedCircle.Events);
 		}
 	}
 }

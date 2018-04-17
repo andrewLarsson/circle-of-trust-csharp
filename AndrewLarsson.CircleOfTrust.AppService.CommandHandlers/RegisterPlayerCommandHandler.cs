@@ -8,16 +8,13 @@ using AndrewLarsson.Common.AppService;
 
 namespace AndrewLarsson.CircleOfTrust.AppService.CommandHandlers {
 	public class RegisterPlayerCommandHandler : ICommandHandler<RegisterPlayerCommand> {
-		private readonly IEventPublisher _eventPublisher;
 		private readonly IAggregateRootStore<Player> _playerStore;
 		private readonly IPlayerRepository _playerRepository;
 
 		public RegisterPlayerCommandHandler(
-			IEventPublisher eventPublisher,
 			IAggregateRootStore<Player> playerStore,
 			IPlayerRepository playerRepository
 		) {
-			_eventPublisher = eventPublisher;
 			_playerStore = playerStore;
 			_playerRepository = playerRepository;
 		}
@@ -30,7 +27,6 @@ namespace AndrewLarsson.CircleOfTrust.AppService.CommandHandlers {
 				new PlayersMustHaveAUniqueUsernameRule(_playerRepository)
 			);
 			await _playerStore.SaveAsync(player);
-			await _eventPublisher.PublishAsync(player.Events);
 		}
 	}
 }
