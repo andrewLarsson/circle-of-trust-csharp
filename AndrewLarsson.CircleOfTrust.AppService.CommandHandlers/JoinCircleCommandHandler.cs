@@ -2,8 +2,6 @@
 using AndrewLarsson.CircleOfTrust.AppService.Commands;
 using AndrewLarsson.CircleOfTrust.AppService.Exceptions;
 using AndrewLarsson.CircleOfTrust.Domain.AggregateRoots;
-using AndrewLarsson.CircleOfTrust.Domain.Repositories;
-using AndrewLarsson.CircleOfTrust.Domain.Rules;
 using AndrewLarsson.CircleOfTrust.Domain.Services;
 using AndrewLarsson.Common.AppService;
 
@@ -12,24 +10,18 @@ namespace AndrewLarsson.CircleOfTrust.AppService.CommandHandlers {
 		private readonly IAggregateRootStore<Member> _memberStore;
 		private readonly IAggregateRootStore<Player> _playerStore;
 		private readonly IAggregateRootStore<Circle> _circleStore;
-		private readonly ICircleRepository _circleRepository;
-		private readonly IBetrayedCircleRepository _betrayedCircleRepository;
-		private readonly IMemberRepository _memberRepository;
+		private readonly JoinCircleService _joinCircleService;
 
 		public JoinCircleCommandHandler(
 			IAggregateRootStore<Member> memberStore,
 			IAggregateRootStore<Player> playerStore,
 			IAggregateRootStore<Circle> circleStore,
-			ICircleRepository circleRepository,
-			IBetrayedCircleRepository betrayedCircleRepository,
-			IMemberRepository memberRepository
+			JoinCircleService joinCircleService
 		) {
 			_memberStore = memberStore;
 			_playerStore = playerStore;
 			_circleStore = circleStore;
-			_circleRepository = circleRepository;
-			_betrayedCircleRepository = betrayedCircleRepository;
-			_memberRepository = memberRepository;
+			_joinCircleService = joinCircleService;
 		}
 
 		public async Task HandleAsync(JoinCircleCommand command) {
@@ -41,15 +33,11 @@ namespace AndrewLarsson.CircleOfTrust.AppService.CommandHandlers {
 			if (circle == null) {
 				throw new CircleDoesNotExistException();
 			}
-			Member member = await JoinCircleService.JoinCircle(
+			Member member = await _joinCircleService.JoinCircle(
 				command.MemberId,
 				command.PlayerId,
 				command.CircleId,
-				command.Key,
-				new CircleKeyMustBeValidInOrderToJoinOrBetrayCircleRule(_circleRepository),
-				new PlayersMayNotJoinOrBetrayCircleThatHasBeenBetrayedRule(_betrayedCircleRepository),
-				new PlayersMayNotJoinOrBetrayTheirOwnCircleRule(_circleRepository),
-				new PlayersMayOnlyJoinACircleOnceRule(_memberRepository)
+				command.Key
 			);
 			await _memberStore.SaveAsync(member);
 		}

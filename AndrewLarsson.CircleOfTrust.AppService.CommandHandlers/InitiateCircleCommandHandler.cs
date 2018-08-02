@@ -2,8 +2,6 @@
 using AndrewLarsson.CircleOfTrust.AppService.Commands;
 using AndrewLarsson.CircleOfTrust.AppService.Exceptions;
 using AndrewLarsson.CircleOfTrust.Domain.AggregateRoots;
-using AndrewLarsson.CircleOfTrust.Domain.Repositories;
-using AndrewLarsson.CircleOfTrust.Domain.Rules;
 using AndrewLarsson.CircleOfTrust.Domain.Services;
 using AndrewLarsson.Common.AppService;
 
@@ -11,16 +9,16 @@ namespace AndrewLarsson.CircleOfTrust.AppService.CommandHandlers {
 	public class InitiateCircleCommandHandler : ICommandHandler<InitiateCircleCommand> {
 		private readonly IAggregateRootStore<Circle> _circleStore;
 		private readonly IAggregateRootStore<Player> _playerStore;
-		private readonly ICircleRepository _circleRepository;
+		private readonly InitiateCircleService _initiateCircleService;
 
 		public InitiateCircleCommandHandler(
 			IAggregateRootStore<Circle> circleStore,
 			IAggregateRootStore<Player> playerStore,
-			ICircleRepository circleRepository
+			InitiateCircleService initiateCircleService
 		) {
 			_circleStore = circleStore;
 			_playerStore = playerStore;
-			_circleRepository = circleRepository;
+			_initiateCircleService = initiateCircleService;
 		}
 
 		public async Task HandleAsync(InitiateCircleCommand command) {
@@ -28,13 +26,11 @@ namespace AndrewLarsson.CircleOfTrust.AppService.CommandHandlers {
 			if (player == null) {
 				throw new PlayerDoesNotExistException();
 			}
-			Circle circle = await InitiateCircleService.InitiateCircle(
+			Circle circle = await _initiateCircleService.InitiateCircle(
 				command.CircleId,
 				command.PlayerId,
 				command.Name,
-				command.Key,
-				new CirclesMustHaveAUniqueNameRule(_circleRepository),
-				new PlayersMayOnlyInitiateOneCircleRule(_circleRepository)
+				command.Key
 			);
 			await _circleStore.SaveAsync(circle);
 		}

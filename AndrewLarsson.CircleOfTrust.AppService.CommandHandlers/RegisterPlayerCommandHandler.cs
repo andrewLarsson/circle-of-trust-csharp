@@ -1,30 +1,27 @@
 ﻿using System.Threading.Tasks;
 using AndrewLarsson.CircleOfTrust.AppService.Commands;
 using AndrewLarsson.CircleOfTrust.Domain.AggregateRoots;
-using AndrewLarsson.CircleOfTrust.Domain.Repositories;
-using AndrewLarsson.CircleOfTrust.Domain.Rules;
 using AndrewLarsson.CircleOfTrust.Domain.Services;
 using AndrewLarsson.Common.AppService;
 
 namespace AndrewLarsson.CircleOfTrust.AppService.CommandHandlers {
 	public class RegisterPlayerCommandHandler : ICommandHandler<RegisterPlayerCommand> {
 		private readonly IAggregateRootStore<Player> _playerStore;
-		private readonly IPlayerRepository _playerRepository;
+		private readonly RegisterPlayerService _registerPlayerService;
 
 		public RegisterPlayerCommandHandler(
 			IAggregateRootStore<Player> playerStore,
-			IPlayerRepository playerRepository
+			RegisterPlayerService registerPlayerService
 		) {
 			_playerStore = playerStore;
-			_playerRepository = playerRepository;
+			_registerPlayerService = registerPlayerService;
 		}
 
 		public async Task HandleAsync(RegisterPlayerCommand command) {
-			Player player = await RegisterPlayerService.RegisterPlayer(
+			Player player = await _registerPlayerService.RegisterPlayer(
 				command.PlayerId,
 				command.Username,
-				command.Password,
-				new PlayersMustHaveAUniqueUsernameRule(_playerRepository)
+				command.Password
 			);
 			await _playerStore.SaveAsync(player);
 		}
