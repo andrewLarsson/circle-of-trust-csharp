@@ -2,6 +2,8 @@
 using System.Data.SqlClient;
 using AndrewLarsson.CircleOfTrust.Domain.AggregateRoots;
 using AndrewLarsson.CircleOfTrust.Domain.Repositories;
+using AndrewLarsson.CircleOfTrust.Domain.Rules;
+using AndrewLarsson.CircleOfTrust.Domain.Services;
 using AndrewLarsson.CircleOfTrust.Infrastructure;
 using AndrewLarsson.CircleOfTrust.Persistence.Dapper;
 using AndrewLarsson.CircleOfTrust.Persistence.Dapper.Repositories;
@@ -23,11 +25,41 @@ namespace AndrewLarsson.CircleOfTrust.Host.HttpJsonRpc.DependencyInjection {
 				throw new ArgumentNullException(nameof(serviceCollection));
 			}
 			return serviceCollection
+				.AddCircleOfTrustDomainServices(configuration)
+				.AddCircleOfTrustDomainRules(configuration)
 				.AddCircleOfTrustHost(configuration)
 				.AddCircleOfTrustDapperPersistence(configuration)
 				.AddCircleOfTrustDapperView(configuration)
 				.AddCircleOfTrustInProcessEvents(configuration)
 				.AddCircleOfTrustAppServiceCommandHandlers(configuration)
+			;
+		}
+
+		public static IServiceCollection AddCircleOfTrustDomainServices(this IServiceCollection serviceCollection, IConfiguration configuration) {
+			if (serviceCollection == null) {
+				throw new ArgumentNullException(nameof(serviceCollection));
+			}
+			return serviceCollection
+				.AddTransient<RegisterPlayerService>()
+				.AddTransient<InitiateCircleService>()
+				.AddTransient<JoinCircleService>()
+				.AddTransient<BetrayCircleService>()
+			;
+		}
+
+		public static IServiceCollection AddCircleOfTrustDomainRules(this IServiceCollection serviceCollection, IConfiguration configuration) {
+			if (serviceCollection == null) {
+				throw new ArgumentNullException(nameof(serviceCollection));
+			}
+			return serviceCollection
+				.AddTransient<CircleKeyMustBeValidInOrderToJoinOrBetrayCircleRule>()
+				.AddTransient<CirclesMustHaveAUniqueNameRule>()
+				.AddTransient<PlayersMayNotBetrayCircleTheyAreAMemberOfRule>()
+				.AddTransient<PlayersMayNotJoinOrBetrayCircleThatHasBeenBetrayedRule>()
+				.AddTransient<PlayersMayNotJoinOrBetrayTheirOwnCircleRule>()
+				.AddTransient<PlayersMayOnlyInitiateOneCircleRule>()
+				.AddTransient<PlayersMayOnlyJoinACircleOnceRule>()
+				.AddTransient<PlayersMustHaveAUniqueUsernameRule>()
 			;
 		}
 
@@ -50,15 +82,15 @@ namespace AndrewLarsson.CircleOfTrust.Host.HttpJsonRpc.DependencyInjection {
 			}
 			return serviceCollection
 				.AddTransient(serviceProvider => new CircleOfTrustDapperPersistenceContext(new SqlConnection(configuration["App:CircleOfTrustDatabaseConnectionString"])))
-				.AddSingleton<IAggregateRootStore<Player>, DapperPlayerStore>()
-				.AddSingleton<IAggregateRootStore<Circle>, DapperCircleStore>()
-				.AddSingleton<IAggregateRootStore<Member>, DapperMemberStore>()
-				.AddSingleton<IAggregateRootStore<BetrayedCircle>, DapperBetrayedCircleStore>()
-				.AddSingleton<IPlayerRepository, DapperPlayerRepository>()
-				.AddSingleton<ICircleRepository, DapperCircleRepository>()
-				.AddSingleton<IMemberRepository, DapperMemberRepository>()
-				.AddSingleton<IBetrayedCircleRepository, DapperBetrayedCircleRepository>()
-				.AddGenericTypeDefinition(typeof(IEventHandler<>), "AndrewLarsson.CircleOfTrust.Persistence.Dapper.EventHandlers".ToAssembly())
+				.AddTransient<IAggregateRootStore<Player>, DapperPlayerStore>()
+				.AddTransient<IAggregateRootStore<Circle>, DapperCircleStore>()
+				.AddTransient<IAggregateRootStore<Member>, DapperMemberStore>()
+				.AddTransient<IAggregateRootStore<BetrayedCircle>, DapperBetrayedCircleStore>()
+				.AddTransient<IPlayerRepository, DapperPlayerRepository>()
+				.AddTransient<ICircleRepository, DapperCircleRepository>()
+				.AddTransient<IMemberRepository, DapperMemberRepository>()
+				.AddTransient<IBetrayedCircleRepository, DapperBetrayedCircleRepository>()
+				.AddTransientGenericTypeDefinition(typeof(IEventHandler<>), "AndrewLarsson.CircleOfTrust.Persistence.Dapper.EventHandlers".ToAssembly())
 			;
 		}
 
@@ -68,8 +100,8 @@ namespace AndrewLarsson.CircleOfTrust.Host.HttpJsonRpc.DependencyInjection {
 			}
 			return serviceCollection
 				.AddTransient(serviceProvider => new CircleOfTrustDapperViewContext(new SqlConnection(configuration["App:CircleOfTrustViewDatabaseConnectionString"])))
-				.AddGenericTypeDefinition(typeof(IEventHandler<>), "AndrewLarsson.CircleOfTrust.View.Dapper.EventHandlers".ToAssembly())
-				.AddGenericTypeDefinition(typeof(IQueryHandler<>), "AndrewLarsson.CircleOfTrust.View.Dapper.QueryHandlers".ToAssembly())
+				.AddTransientGenericTypeDefinition(typeof(IEventHandler<>), "AndrewLarsson.CircleOfTrust.View.Dapper.EventHandlers".ToAssembly())
+				.AddTransientGenericTypeDefinition(typeof(IQueryHandler<>), "AndrewLarsson.CircleOfTrust.View.Dapper.QueryHandlers".ToAssembly())
 			;
 		}
 
@@ -87,7 +119,7 @@ namespace AndrewLarsson.CircleOfTrust.Host.HttpJsonRpc.DependencyInjection {
 				throw new ArgumentNullException(nameof(serviceCollection));
 			}
 			return serviceCollection
-				.AddGenericTypeDefinition(typeof(ICommandHandler<>), "AndrewLarsson.CircleOfTrust.AppService.CommandHandlers".ToAssembly())
+				.AddTransientGenericTypeDefinition(typeof(ICommandHandler<>), "AndrewLarsson.CircleOfTrust.AppService.CommandHandlers".ToAssembly())
 			;
 		}
 	}
